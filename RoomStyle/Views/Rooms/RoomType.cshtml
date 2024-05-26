@@ -1,0 +1,290 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.7.8/vue.min.js"></script>
+    <link href="~/Css/RoomStyles.css" rel="stylesheet" />
+    @*<script src="~/bootstrap-5.3.3/js/bootstrap.js"></script>*@
+    <link href="~/bootstrap-5.3.3/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/fontawesome-free-6.5.2-web/css/all.css" rel="stylesheet" />
+    <title>房型</title>
+</head>
+<body>
+    <div id="app" class="container-fluid">
+        <div class="indep_cover"></div>
+        <div class="row">
+            <div class="col-sm-3 scroll_able col-control">
+                <h2>飯店資訊</h2>
+                <hr>
+                <div class="form-group">
+                    <label>總折數</label>
+                    <input class="form-control" v-model="discount">
+                </div>
+                <div class="form-group">
+                    <label>服務費</label>
+                    <input class="form-control" v-model="tip">
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-outline-primary" v-on:click="price_raise(100)">萬物齊漲(+100)</button>
+                </div>
+                <br>
+                <h2>房型編輯 ({{rooms.length}}間)</h2>
+                <hr>
+                <div class="form-group room_edit" v-for="(room, id) in rooms" :key="id">
+                    <div class="room_tag">
+                        <h4>
+                            {{room.name}}
+                            <i class="fa fa-trash delete_btn" v-on:click="delete_room(id)"></i>
+                        </h4>
+                        <input class="toggle_check" type="checkbox">
+                        <div class="edit_part">
+                            <hr>
+                            <div class="form-group">
+                                <label>名稱(中)</label>
+                                <input class="form-control" v-model="room.name">
+                            </div>
+                            <div class="form-group">
+                                <label>名稱(英)</label>
+                                <input class="form-control" v-model="room.eng">
+                            </div>
+                            <div class="form-group">
+                                <label>折價</label>
+                                <input class="form-control" v-model="room.discount">
+                            </div>
+                            <div class="form-group">
+                                <label>價錢</label>
+                                <input class="form-control" v-model="room.price">
+                            </div>
+                            <div class="form-group">
+                                <label>圖片</label>
+                                <input class="form-control" v-model="room.cover">
+                            </div>
+                            <div class="form-group equips">
+                                <label>設備</label>
+                                <label>wifi</label>
+                                <input type="checkbox" v-model="room.equipment.wifi">
+                                <label>浴缸</label>
+                                <input type="checkbox" v-model="room.equipment.bathtub">
+                                <label>早餐</label>
+                                <input type="checkbox" v-model="room.equipment.breakfast">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group room_edit add_room" v-on:click="add_new_room">+ 新房間</div>
+            </div>
+            <div class="col-sm-9 scroll_able col-rooms">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h2>房型一覽</h2>
+                        <hr>
+                        <room v-for="(room, id) in rooms"
+                              :key="id"
+                              :room_data="room"
+                              :hotel_discount="discount"
+                              :hotel_tip="tip"
+                              :id="id"
+                              :delete_room="delete_room"></room>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <template id="room">
+        <div class="col-lg-4 col-md-6 col-sm-12 room_col">
+            <div class="room_container" v-if="room_data">
+                <div class="cover" :style="bg_css(room_data.cover)">
+                    <h3>{{room_data.name}}</h3>
+                    <i class="fa fa-times btn-delete" v-on:click="delete_room(id)"></i>
+                </div>
+                <div class="info">
+                    <h5>
+                        {{room_data.eng}}
+                        <span class="icons" v-if="room_data.equipment">
+                            <i class="fa fa-wifi" v-if="room_data.equipment.wifi"></i>
+                            <i class="fa fa-bathtub" v-if="room_data.equipment.bathtub"></i>
+                            <i class="fa fa-coffee" v-if="room_data.equipment.breakfast"></i>
+                        </span>
+                    </h5>
+                    <h5>
+                        <span>{{room_data.discount}} * {{hotel_discount}}</span>
+                        <span>=</span>
+                        <span>{{parseInt(room_data.discount * hotel_discount * 100)}} 折</span>
+                    </h5>
+                    <h4>
+                        TWD
+                        <s>{{room_data.price}}</s>
+                        <span class="final_price">{{final_price}}$</span>
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        var rooms = [
+            {
+                "name": "經濟雙人房",
+                "eng": "Economy Double Room",
+                "price": 7000,
+                "amount": 0,
+                "cover": "/RoomPics/room_1.jpg",
+                "discount": 0.9,
+                "equipment": {
+                    "wifi": false,
+                    "bathtub": true,
+                    "breakfast": true
+                }
+            },
+            {
+                "name": "海景三人房",
+                "eng": "Sea view triple Room",
+                "price": 7800,
+                "amount": 0,
+                "cover": "/RoomPics/room_2.jpg",
+                "discount": 0.8,
+                "equipment": {
+                    "wifi": true,
+                    "bathtub": true,
+                    "breakfast": false
+                }
+            },
+            {
+                "name": "典雅景觀房",
+                "eng": "Elegant landscape Room",
+                "price": 5400,
+                "amount": 0,
+                "cover": "/RoomPics/room_3.jpg",
+                "discount": 0.85,
+                "equipment": {
+                    "wifi": false,
+                    "bathtub": true,
+                    "breakfast": true
+                }
+            },
+            {
+                "name": "尊享豪華房",
+                "eng": "Exclusive Deluxe Room",
+                "price": 9800,
+                "amount": 0,
+                "cover": "/RoomPics/room_4.jpg",
+                "discount": 0.8,
+                "equipment": {
+                    "wifi": true,
+                    "bathtub": false,
+                    "breakfast": true
+                }
+            },
+            {
+                "name": "商務雙人房",
+                "eng": "Business Double Room",
+                "price": 5600,
+                "amount": 0,
+                "cover": "/RoomPics/room_5.jpg",
+                "discount": 0.9,
+                "equipment": {
+                    "wifi": true,
+                    "bathtub": false,
+                    "breakfast": false
+                }
+            },
+            {
+                "name": "溫泉雙人房",
+                "eng": "Hot spring double Room",
+                "price": 8400,
+                "amount": 0,
+                "cover": "/RoomPics/room_6.jpg",
+                "discount": 0.6,
+                "equipment": {
+                    "wifi": true,
+                    "bathtub": true,
+                    "breakfast": true
+                }
+            },
+            {
+                "name": "總統套房",
+                "eng": "Presidential Suite",
+                "price": 23000,
+                "amount": 0,
+                "cover": "/RoomPics/room_7.jpg",
+                "discount": 0.75,
+                "equipment": {
+                    "wifi": true,
+                    "bathtub": true,
+                    "breakfast": true
+                }
+            },
+            {
+                "name": "奢華四人房",
+                "eng": "Luxury four Room",
+                "price": 8500,
+                "amount": 0,
+                "cover": "/RoomPics/room_8.jpg",
+                "discount": 0.7,
+                "equipment": {
+                    "wifi": true,
+                    "bathtub": true,
+                    "breakfast": false
+                }
+            }
+        ];
+
+        Vue.component("Room", {
+            template: "#room",
+            props: ["room_data", "hotel_discount", "hotel_tip", "delete_room", "id"],
+            methods: {
+                bg_css: function (url) {
+                    return {
+                        "background-image": "url('" + url + "')",
+                        "background-color": "#555"
+                    };
+                }
+            },
+            computed: {
+                final_discount: function () {
+                    return this.room_data.discount * this.hotel_discount;
+                },
+                final_price: function () {
+                    return parseInt(this.room_data.price * this.final_discount + 1.0 * this.hotel_tip);
+                }
+            }
+        });
+
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                rooms: rooms,
+                discount: 0.9,
+                tip: 200
+            }, methods: {
+                add_new_room: function () {
+                    this.rooms.push({
+                        name: "新房間",
+                        eng: "new room",
+                        equipment: {},
+                        cover: "",
+                        price: 0,
+                        discount: 1
+                    });
+                },
+                price_raise: function (delta) {
+                    var vobj = this;
+                    this.rooms.forEach(function (obj) {
+                        obj.price += delta;
+                    });
+                },
+                delete_room: function (id) {
+                    this.rooms.splice(id, 1);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
