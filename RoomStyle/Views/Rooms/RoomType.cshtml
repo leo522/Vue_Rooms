@@ -1,17 +1,15 @@
-﻿
-@{
+﻿@{
     Layout = null;
 }
-
 <!DOCTYPE html>
-
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.7.8/vue.min.js"></script>
     <link href="~/Css/RoomStyles.css" rel="stylesheet" />
     @*<script src="~/bootstrap-5.3.3/js/bootstrap.js"></script>*@
-    <link href="~/bootstrap-5.3.3/css/bootstrap.css" rel="stylesheet" />
+    @*<link href="~/bootstrap-5.3.3/css/bootstrap.css" rel="stylesheet" />*@
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
     <link href="~/fontawesome-free-6.5.2-web/css/all.css" rel="stylesheet" />
     <title>房型</title>
 </head>
@@ -37,51 +35,50 @@
                 <h2>房型編輯 ({{rooms.length}}間)</h2>
                 <hr>
                 <div class="form-group room_edit" v-for="(room, id) in rooms" :key="id">
-                    <div class="room_tag">
-                        <h4>
-                            {{room.name}}
-                            <i class="fa fa-trash delete_btn" v-on:click="delete_room(id)"></i>
-                        </h4>
-                        <input class="toggle_check" type="checkbox">
-                        <div class="edit_part">
-                            <hr>
-                            <div class="form-group">
-                                <label>名稱(中)</label>
-                                <input class="form-control" v-model="room.name">
+                    <label class="room_tag">
+                            <h4>
+                                {{room.name}}
+                                <i class="fa fa-trash delete_btn" v-on:click="delete_room(id)"></i>
+                            </h4>
+                            <input class="toggle_check" type="checkbox">
+                            <div class="edit_part">
+                                <hr>
+                                <div class="form-group">
+                                    <label>名稱(中)</label>
+                                    <input class="form-control" v-model="room.name">
+                                </div>
+                                <div class="form-group">
+                                    <label>名稱(英)</label>
+                                    <input class="form-control" v-model="room.eng">
+                                </div>
+                                <div class="form-group">
+                                    <label>折價</label>
+                                    <input class="form-control" v-model="room.discount">
+                                </div>
+                                <div class="form-group">
+                                    <label>價錢</label>
+                                    <input class="form-control" v-model="room.price">
+                                </div>
+                                <div class="form-group">
+                                    <label>圖片</label>
+                                    <input class="form-control" v-model="room.cover">
+                                </div>
+                                <div class="form-group equips">
+                                    <label>設備</label>
+                                    <label>wifi</label>
+                                    <input type="checkbox" v-model="room.equipment.wifi">
+                                    <label>浴缸</label>
+                                    <input type="checkbox" v-model="room.equipment.bathtub">
+                                    <label>早餐</label>
+                                    <input type="checkbox" v-model="room.equipment.breakfast">
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label>名稱(英)</label>
-                                <input class="form-control" v-model="room.eng">
-                            </div>
-                            <div class="form-group">
-                                <label>折價</label>
-                                <input class="form-control" v-model="room.discount">
-                            </div>
-                            <div class="form-group">
-                                <label>價錢</label>
-                                <input class="form-control" v-model="room.price">
-                            </div>
-                            <div class="form-group">
-                                <label>圖片</label>
-                                <input class="form-control" v-model="room.cover">
-                            </div>
-                            <div class="form-group equips">
-                                <label>設備</label>
-                                <label>wifi</label>
-                                <input type="checkbox" v-model="room.equipment.wifi">
-                                <label>浴缸</label>
-                                <input type="checkbox" v-model="room.equipment.bathtub">
-                                <label>早餐</label>
-                                <input type="checkbox" v-model="room.equipment.breakfast">
-                            </div>
-                        </div>
-                    </div>
+                    </label>
                 </div>
                 <div class="form-group room_edit add_room" v-on:click="add_new_room">+ 新房間</div>
             </div>
             <div class="col-sm-9 scroll_able col-rooms">
                 <div class="row">
-                    <div class="col-sm-12">
                         <h2>房型一覽</h2>
                         <hr>
                         <room v-for="(room, id) in rooms"
@@ -90,9 +87,9 @@
                               :hotel_discount="discount"
                               :hotel_tip="tip"
                               :id="id"
-                              :delete_room="delete_room"></room>
+                              :delete_room="delete_room">
+                        </room>
                     </div>
-                </div>
             </div>
         </div>
     </div>
@@ -100,7 +97,7 @@
     <template id="room">
         <div class="col-lg-4 col-md-6 col-sm-12 room_col">
             <div class="room_container" v-if="room_data">
-                <div class="cover" :style="bg_css(room_data.cover)">
+                <div class="cover" v-bind:style="bg_css(room_data.cover)">
                     <h3>{{room_data.name}}</h3>
                     <i class="fa fa-times btn-delete" v-on:click="delete_room(id)"></i>
                 </div>
@@ -119,9 +116,9 @@
                         <span>{{parseInt(room_data.discount * hotel_discount * 100)}} 折</span>
                     </h5>
                     <h4>
-                        TWD
+                        NT $
                         <s>{{room_data.price}}</s>
-                        <span class="final_price">{{final_price}}$</span>
+                        <span class="final_price">${{final_price}}</span>
                     </h4>
                 </div>
             </div>
