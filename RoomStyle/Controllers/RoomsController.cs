@@ -18,5 +18,10 @@ namespace RoomStyle.Controllers
         {
             return View();
         }
+
+        public ActionResult iOS_CalanderType() 
+        {
+            return View();
+        }
     }
 }

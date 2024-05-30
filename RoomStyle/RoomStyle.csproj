@@ -168,6 +168,7 @@
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Css\animate.min.css" />
     <Content Include="Css\fonts.googleapis.css" />
+    <Content Include="Css\iosCalanderStyle.css" />
     <Content Include="Css\RoomStyles.css" />
     <Content Include="favicon.ico" />
     <Content Include="fontawesome-free-6.5.2-web\css\all.css" />
@@ -2368,6 +2369,7 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Rooms\RoomType.cshtml" />
+    <Content Include="Views\Rooms\iOS_CalanderType.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

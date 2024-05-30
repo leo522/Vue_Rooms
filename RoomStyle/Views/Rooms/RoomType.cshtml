@@ -4,11 +4,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.7.8/vue.min.js"></script>
     <link href="~/Css/RoomStyles.css" rel="stylesheet" />
-    @*<script src="~/bootstrap-5.3.3/js/bootstrap.js"></script>*@
-    @*<link href="~/bootstrap-5.3.3/css/bootstrap.css" rel="stylesheet" />*@
     <link href="~/Content/bootstrap.css" rel="stylesheet" />
     <link href="~/fontawesome-free-6.5.2-web/css/all.css" rel="stylesheet" />
     <title>房型</title>
@@ -74,7 +72,12 @@
                                 </div>
                             </div>
                     </label>
-                </div>
+                </div><br />
+                <!--<h2>房間編輯 ({{rooms.length}}間)</h2>
+                <select class="form-contrl">-->
+                    @*v-model="edit_id"*@
+                    <!--<option v-for="(r, id) in rooms" :key="id" :value="id">{{ r.name }}</option>
+                </select>-->
                 <div class="form-group room_edit add_room" v-on:click="add_new_room">+ 新房間</div>
             </div>
             <div class="col-sm-9 scroll_able col-rooms">
